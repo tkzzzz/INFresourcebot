@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # --- Configuration ---
 RSS_FEED_URL = "https://feeds.feedburner.com/GalaxyHarvesterResourceActivity"
-TARGET_SERVER_NAME = "Sentinels Republic 2"
+TARGET_SERVER_NAME = "SWG Infinity"
 CHECK_INTERVAL_SECONDS = 300
 MAX_SEEN_ENTRIES = 200
 
@@ -213,3 +213,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
