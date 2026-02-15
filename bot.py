@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # --- Configuration ---
 RSS_FEED_URL = "https://feeds.feedburner.com/GalaxyHarvesterResourceActivity"
 TARGET_SERVER_NAME = "SWG Infinity"
-CHECK_INTERVAL_SECONDS = 300
+CHECK_INTERVAL_SECONDS = 120
 MAX_SEEN_ENTRIES = 200
 
 # --- Environment Variables ---
@@ -169,28 +169,10 @@ async def fetch_rss_feed_task():
 
 @fetch_rss_feed_task.before_loop
 async def before_fetch_rss_feed_task():
-    global seen_entry_guids
-    logging.info("Waiting for bot to be ready before starting RSS fetch loop...")
+    logging.info("Waiting for bot to be ready...")
     await bot.wait_until_ready()
-    logging.info("Bot is ready. Initializing 'seen entries' list from current feed...")
-    try:
-        feed = await bot.loop.run_in_executor(None, feedparser.parse, RSS_FEED_URL)
-        if feed.bozo:
-            logging.warning(f"Error parsing RSS feed during pre-population: {feed.bozo_exception}")
-            return
-        
-        initial_guids = [entry.get("guid", entry.link) for entry in feed.entries]
-        temp_seen_guids = list(dict.fromkeys(initial_guids)) 
-        
-        if len(temp_seen_guids) > MAX_SEEN_ENTRIES:
-            seen_entry_guids = temp_seen_guids[:MAX_SEEN_ENTRIES]
-        else:
-            seen_entry_guids = temp_seen_guids
-            
-        logging.info(f"Pre-populated {len(seen_entry_guids)} entries as 'seen'. Max capacity: {MAX_SEEN_ENTRIES}")
-
-    except Exception as e:
-        logging.exception("Error during initial RSS feed fetch for pre-population:")
+    logging.info("Bot ready! Starting fresh check (this will post recent resources).")
+    # We leave seen_entry_guids empty so it 'catches' current feed items
 
 # --- Main Execution ---
 def main():
@@ -213,4 +195,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
