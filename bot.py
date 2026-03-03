@@ -13,8 +13,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # --- Configuration ---
 RSS_FEED_URL = "https://feeds.feedburner.com/GalaxyHarvesterResourceActivity"
 TARGET_SERVER_NAME = "SWG Infinity"
-CHECK_INTERVAL_SECONDS = 20
-MAX_SEEN_ENTRIES = 250
+CHECK_INTERVAL_SECONDS = 15
+MAX_SEEN_ENTRIES = 350
 
 # --- Environment Variables ---
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -213,5 +213,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
